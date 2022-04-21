@@ -8,17 +8,17 @@ import XY
 pyautogui.PAUSE = .2
 import random
 
- # + random.randint(-25,25)
+ # + random.randint(-13,13)
  # a function to wiggle the clicks to be harder to detect as a bot
 
 def playCards():
 
-    X = XY.HAND_LEFT # play cards on active spot 75%, first bench 25%
+    X = XY.HAND_LEFT
     i = 0 
     while i < 501:
-        pyautogui.click(X[0]+i + random.randint(-25,25),X[1] + random.randint(-25,25)) # click card
+        pyautogui.click(X[0]+i + random.randint(-13,13),X[1] + random.randint(-13,13)) # click card
         
-        pyautogui.click(XY.BOARD_LEFT[0] + random.randint(0,920) + random.randint(-25,25) ,XY.BOARD_RIGHT[1] + random.randint(-25,25)) # click board
+        pyautogui.click(XY.BOARD_LEFT[0] + random.randint(0,920) + random.randint(-13,13) ,XY.BOARD_RIGHT[1] + random.randint(-13,13)) # click board
 
         i += 100 # shift right
 
@@ -27,43 +27,51 @@ def playCards():
 def attack(): # attacks face only
 
     for i in range(7):
-        pyautogui.click(XY.BOARD_LEFT[0] + i*131 + random.randint(-25,25), XY.BOARD_LEFT[1] + random.randint(-25,25)) # board length / 7 minion slots
-        pyautogui.click(XY.ENEMY_HERO[0] + random.randint(-25,25), XY.ENEMY_HERO[1] + random.randint(-25,25)) # face
+        # not using any except center minion rn, just seeing if it is productive
+        if i == 3 or # i == 2 or i == 4: # use central minions to attack central minions; artbitrary 
+            pyautogui.click(XY.BOARD_LEFT[0] + i*131 + 100 + random.randint(-13,13), XY.BOARD_LEFT[1] + random.randint(-13,13)) # +100 on the X because we want to hit both even and odd amount of minions
+            for j in range(7):
+                pyautogui.click(XY.BOARD_LEFT[0] + j*131 + random.randint(-13,13), XY.ENEMY_MINION[1] + random.randint(-13,13))
+            pyautogui.click(XY.ENEMY_HERO[0] + random.randint(-13,13), XY.ENEMY_HERO[1] + random.randint(-13,13)) # face
 
-    pyautogui.click(XY.HP[0] + random.randint(-25,25), XY.HP[1] + random.randint(-25,25)) # use hero power, probably hunter's
+        else:
+            pyautogui.click(XY.BOARD_LEFT[0] + i*131 + random.randint(-13,13), XY.BOARD_LEFT[1] + random.randint(-13,13)) # board length / 7 minion slots
+            pyautogui.click(XY.ENEMY_HERO[0] + random.randint(-13,13), XY.ENEMY_HERO[1] + random.randint(-13,13)) # face
+
+    pyautogui.click(XY.HP[0] + random.randint(-13,13), XY.HP[1] + random.randint(-13,13)) # use hero power, probably hunter's
 
     return
 
 def Done():
-    pyautogui.click(XY.CONFIRM[0] + random.randint(-25,25), XY.CONFIRM[1] + random.randint(-25,25))
-    pyautogui.click(XY.END_TURN[0] + random.randint(-25,25), XY.END_TURN[1] + random.randint(-25,25))
+    pyautogui.click(XY.CONFIRM[0] + random.randint(-13,13), XY.CONFIRM[1] + random.randint(-13,13))
+    pyautogui.click(XY.END_TURN[0] + random.randint(-13,13), XY.END_TURN[1] + random.randint(-13,13))
 
     return
 
 def autoBattle():
 
-    print("\n")
-
     while not pyautogui.locateOnScreen('Play.png', confidence = .8): # wait for play to be available
         print("Waiting for Play button",end = '\r')
         pass
-    pyautogui.click(1400 + random.randint(-25,25), 880 + random.randint(-25,25)) # click Play!
+    pyautogui.click(1400 + random.randint(-13,13), 880 + random.randint(-13,13)) # click Play!
 
     # wait for initializer
     while not pyautogui.locateOnScreen('initializer.png', confidence = .8): # wait for match
         print("Waiting for initializer",end = '\r')
         pass
 
-    pyautogui.click(XY.CONFIRM[0] + random.randint(-25,25), XY.CONFIRM[1] + random.randint(-25,25))
+    pyautogui.click(XY.CONFIRM[0] + random.randint(-13,13), XY.CONFIRM[1] + random.randint(-13,13))
 
-    print("Beginning Battle")
+    print("Beginning Battle                ")
 
     i = 0
     while True: # main game loop
 
         playCards()
         attack()
-        if not i % 3:
+        if pyautogui.locateOnScreen("Green_End_Turn.png", confidence = .8):
+            Done()
+        if not i % 4:
             Done()
 
         i += 1
