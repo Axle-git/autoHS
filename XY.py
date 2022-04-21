@@ -1,12 +1,13 @@
 # Constants and function to easily find coordinates (X,Y)
+# Valid for 1920x1080 screens
 
 import pyautogui
 import time
 
 END_TURN = (1600,490)
 CONFIRM = (960,860)
-HAND_LEFT = (700,1000)
-HAND_RIGHT = (1200,1000)
+HAND_LEFT = (700,1030)
+HAND_RIGHT = (1200,1030)
 HP = (1140,830)
 ENEMY_HERO = (960,200)
 BOARD_LEFT = (480,600)
