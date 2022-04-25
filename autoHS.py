@@ -76,36 +76,36 @@ def autoBattle():
     print("Beginning Battle                            ")
 
     i = 0
+    turnTime = time.time()
 
     while True: # main game loop
 
-        print("Turn #%d                    " % (i+1))
+        while not pyautogui.locateOnScreen("EndTurn.png", confidence = .7):
 
-        turnTime = time.time()
+            turnTime = time.time()
 
-        while not pyautogui.locateOnScreen("EndTurn.png", confidence = .8):
+            print("Waiting for turn                    ", end = '\r') # status
             
-            print("Waiting for turn          ", end = '\r') # status
-            
-            # pyautogui.click(1000,500) # click middle of screen
+            time.sleep(5)
+            pyautogui.click(1000 + random.randint(-13,13),500 + random.randint(-13,13)) # click middle of screen
             if pyautogui.locateOnScreen("Green_End_Turn.png", confidence = .8):
                 Done()
                 break
             if pyautogui.locateOnScreen('Play.png', confidence = .8) or pyautogui.locateOnScreen('Okay.png', confidence = .8):
                 return 1
 
-        print("Playing Cards                ", end = '\r')
+        print("Playing Cards...            ", end = '\r')
         playCards()
         
-        print("Attacking                    ", end = '\r')
+        print("Attacking...            ", end = '\r')
         attack()
 
-        print("Ending Turn                  ", end = '\r')
+        print("Ending Turn...                    ", end = '\r')
         if pyautogui.locateOnScreen("Green_End_Turn.png", confidence = .8):
             Done()
         else:
             
-            if time.time() - turnTime > 60: # 60 seconds max per turn
+            if time.time() - turnTime > 40: # max turn time # pyautogui.locateOnScreen("Rope.png", confidence = .5):
                 Done()
 
 
@@ -128,7 +128,7 @@ def main():
     while autoBattle():
         battles += 1
         print("\nBattle #" + str(battles) + " Complete                 ")
-        print("Total hours elapsed: " + str((time.time()-startTime)/3600) + "\n")
+        print("Total hours elapsed: " + str(round((time.time()-startTime)/3600,2)) + "\n")
 
     print("\nDone\n")
 
