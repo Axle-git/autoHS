@@ -54,10 +54,12 @@ def Done():
 
 def autoBattle():
 
-    while not pyautogui.locateOnScreen('Play.png', confidence = .8): # wait for play to be available
+    while not pyautogui.locateOnScreen('Play.png', confidence = .8) and not pyautogui.locateOnScreen('Alt_Play.png', confidence = .8): # wait for play to be available
         print("Waiting for Play button",end = '\r')
-        pass
+        
+    # time.sleep(30)
     pyautogui.click(1400 + random.randint(-13,13), 880 + random.randint(-13,13)) # click Play!
+    pyautogui.click(XY.ALT_PLAY[0] + random.randint(-13,13), XY.ALT_PLAY[1] + random.randint(-13,13)) # click Play!
 
     # wait for initializer
     startTime = time.time()
@@ -91,7 +93,7 @@ def autoBattle():
             if pyautogui.locateOnScreen("Green_End_Turn.png", confidence = .8):
                 Done()
                 break
-            if pyautogui.locateOnScreen('Play.png', confidence = .8) or pyautogui.locateOnScreen('Okay.png', confidence = .8):
+            if pyautogui.locateOnScreen('Play.png', confidence = .8) or pyautogui.locateOnScreen('Okay.png', confidence = .8) or pyautogui.locateOnScreen('Alt_Play.png', confidence = .8):
                 return 1
 
         print("Playing Cards...            ", end = '\r')
